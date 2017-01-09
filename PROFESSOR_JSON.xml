@@ -1,0 +1,359 @@
+<?xml version="1.0" encoding="euc-kr" ?>
+<jsondef>
+
+	<object name="RequestLogin" type="request" >
+        <field name="requestKey" type="string" desc="요청 키"/>
+        <field name="professorId" type="string" desc="교수 아이디"/>
+        <field name="professorPassword" type="string" desc="PP"/>
+    </object>
+    <object name="ResponseLogin" type="response" >
+        <field name="requestKey" type="string" desc="요청 키"/>
+        <field name="result" type="string" desc="요청 처리 결과값"/>
+        <field name="resultMessage" type="string" desc="처리 오류 상세 메시지" />
+    </object>
+    <handler name="LoginHandler" request="RequestLogin" response="ResponseLogin" 
+        	comment="로그인" />
+        	
+    <object name="RequestAccount" type="request" >
+        <field name="requestKey" type="string" desc="요청 키"/>
+        <field name="professorId" type="string" desc="교수 아이디"/>
+        <field name="professorName" type="string" desc="성명"/>
+        <field name="professorEmail" type="string" desc="이메일"/>
+        <field name="professorPassword" type="string" desc="PP"/>
+    </object>
+    <object name="ResponseAccount" type="response" >
+        <field name="requestKey" type="string" desc="요청 키"/>
+        <field name="result" type="string" desc="요청 처리 결과값"/>
+        <field name="resultMessage" type="string" desc="처리 오류 상세 메시지" />
+    </object>
+    <handler name="LoginHandler" request="RequestAccount" response="ResponseAccount" 
+        	comment="등록" />
+        	
+    <object name="RequestLogout" type="request" >
+        <field name="requestKey" type="string" desc="요청 키"/>
+    </object>
+    <object name="ResponseLogout" type="response" >
+        <field name="requestKey" type="string" desc="요청 키"/>
+        <field name="result" type="string" desc="요청 처리 결과값"/>
+        <field name="resultMessage" type="string" desc="처리 오류 상세 메시지" />
+    </object>
+    <handler name="LoginHandler" request="RequestLogout" response="ResponseLogout" 
+        	comment="로그아웃" />
+        	
+	<object name="ClassItem" type="object" >
+        <field name="professorId" type="string" />
+        <field name="classId" type="int" />
+        <field name="className" type="string" />
+        <field name="classStudents" type="int" />
+        <field name="classProgress" type="double" />
+    </object>
+    <object name="RequestClassList" type="request" >
+        <field name="requestKey" type="string" desc="요청 키"/>
+        <field name="professorId" type="string" desc="교수 아이디"/>
+        <field name="year" type="string" desc="년도"/>
+        <field name="semester" type="int" desc="학기"/>
+    </object>
+    <object name="ResponseClassList" type="response" >
+        <field name="requestKey" type="string" desc="요청 키"/>
+        <field name="result" type="string" desc="요청 처리 결과값"/>
+        <field name="resultMessage" type="string" desc="처리 오류 상세 메시지" />
+        <field name="classList" type="array" template="ClassItem"/>
+    </object>
+    <handler name="ClassHandler" request="RequestClassList" response="ResponseClassList" 
+        	comment="과목 목록 가져오기" />
+     
+    <object name="ClassDetailItem" type="object" >
+        <field name="professorId" type="string" />
+        <field name="classId" type="int" />
+        <field name="className" type="string" />
+        <field name="classDescription" type="string" />
+        <field name="year" type="string" desc="년도"/>
+        <field name="semester" type="int" desc="학기"/>
+    </object>
+    <object name="RequestClassUpdate" type="request" >
+        <field name="requestKey" type="string" desc="요청 키"/>
+        <field name="professorId" type="string" desc="교수 아이디"/>
+        <field name="action" type="string" /><!-- insert,update,delete -->
+        <field name="item" type="ClassDetailItem" desc="과목상세정보"/>
+    </object>
+    <object name="ResponseClassUpdate" type="response" >
+        <field name="requestKey" type="string" desc="요청 키"/>
+        <field name="result" type="string" desc="요청 처리 결과값"/>
+        <field name="resultMessage" type="string" desc="처리 오류 상세 메시지" />
+        <field name="classId" type="int" />
+    </object>
+    <handler name="ClassHandler" request="RequestClassUpdate" response="ResponseClassUpdate" 
+        	comment="과목 추가/삭제/수정" />
+    
+    <object name="ClassTimeItem" type="object" >
+        <field name="dayOfWeek" type="int" desc="요일"/><!-- 0:일,1:월,... -->
+        <field name="startTime" type="datetime" desc="수업 시작시간"/>
+        <field name="endTime" type="datetime" desc="수업 종료시간"/>
+        <field name="building" type="string" />
+        <field name="room" type="string" />
+    </object>
+    <object name="RequestClassTimeUpdate" type="request" >
+        <field name="requestKey" type="string" desc="요청 키"/>
+        <field name="professorId" type="string" desc="교수 아이디"/>
+        <field name="classId" type="int" desc="과목 아이디"/>
+        <field name="action" type="string" /><!-- insert,update,delete -->
+        <field name="start" type="datetime" desc="수업 시작일"/>
+        <field name="end" type="datetime" desc="수업 종료일"/>
+		<field name="itemList" type="array" template="ClassDetailItem" desc="과목상세정보"/>	
+    </object>
+    <object name="ResponseClassTimeUpdate" type="response" >
+        <field name="requestKey" type="string" desc="요청 키"/>
+        <field name="result" type="string" desc="요청 처리 결과값"/>
+        <field name="resultMessage" type="string" desc="처리 오류 상세 메시지" />
+    </object>
+    <handler name="ClassHandler" request="RequestClassTimeUpdate" response="ResponseClassTimeUpdate" 
+        	comment="강의시간 등록" />
+        	
+    <object name="EventItem" type="object" >
+        <field name="professorId" type="string" />
+        <field name="classId" type="int" />
+        <field name="eventType" type="int" desc="0:수업 , 1:기타"/><!-- 0:수업 , 1:기타 -->
+        <field name="className" type="string" />
+        <field name="dayOfWeek" type="int" desc="요일 : 0:일,1:월,"/><!-- 0:일,1:월,... -->
+        <field name="startTime" type="datetime" desc="수업 시작시간"/>
+        <field name="endTime" type="datetime" desc="수업 종료시간"/>
+        <field name="content" type="string" desc="이벤트 설명"/>
+    </object>
+    <object name="RequestEventSchedule" type="request" >
+        <field name="requestKey" type="string" desc="요청 키"/>
+        <field name="professorId" type="string" desc="교수 아이디"/>
+        <field name="classId" type="int" desc="과목 아이디"/>
+        <field name="startTime" type="datetime" desc="검색 시작시간"/>
+        <field name="endTime" type="datetime" desc="검색 종료시간"/>
+    </object>
+    <object name="ResponseEventSchedule" type="response" >
+        <field name="requestKey" type="string" desc="요청 키"/>
+        <field name="result" type="string" desc="요청 처리 결과값"/>
+        <field name="resultMessage" type="string" desc="처리 오류 상세 메시지" />
+        <field name="eventList" type="array" template="EventItem"/>
+    </object>
+    <handler name="EventHandler" request="RequestEventSchedule" response="ResponseEventSchedule" 
+        	comment="이벤트 가져오기" />
+        	
+    <object name="RequestClassTimeRatioUpdate" type="request" >
+        <field name="requestKey" type="string" desc="요청 키"/>
+        <field name="professorId" type="string" desc="교수 아이디"/>
+        <field name="classId" type="int" desc="과목 아이디"/>
+        <field name="ratio" type="double" desc="비율"/><!-- 0~1 -->
+    </object>
+    <object name="ResponseClassTimeRatioUpdate" type="response" >
+        <field name="requestKey" type="string" desc="요청 키"/>
+        <field name="result" type="string" desc="요청 처리 결과값"/>
+        <field name="resultMessage" type="string" desc="처리 오류 상세 메시지" />
+    </object>
+    <handler name="ClassHandler" request="RequestClassTimeRatioUpdate" response="ResponseClassTimeRatioUpdate" 
+        	comment="강의시간 평가 비율 변경" />
+        	
+    
+    <object name="RequestClassStudentUpdate" type="request" >
+        <field name="requestKey" type="string" desc="요청 키"/>
+        <field name="professorId" type="string" desc="교수 아이디"/>
+        <field name="classId" type="int" desc="과목 아이디"/>
+        <field name="action" type="string" /><!-- insert,delete -->
+        <field name="name" type="string" />
+        <field name="id" type="string" />
+        <field name="major" type="string" />
+        <field name="grade" type="string" />
+    </object>
+    <object name="ResponseClassStudentUpdate" type="response" >
+        <field name="requestKey" type="string" desc="요청 키"/>
+        <field name="result" type="string" desc="요청 처리 결과값"/>
+        <field name="resultMessage" type="string" desc="처리 오류 상세 메시지" />
+    </object>
+    <handler name="ClassHandler" request="RequestClassStudentUpdate" response="ResponseClassStudentUpdate" 
+        	comment="수강생 등록/삭제" />
+    
+    <object name="RequestTestMaxRatio" type="request" >
+        <field name="requestKey" type="string" desc="요청 키"/>
+        <field name="professorId" type="string" desc="교수 아이디"/>
+        <field name="classId" type="int" desc="과목 아이디"/>
+    </object>
+    <object name="ResponseTestMaxRatio" type="response" >
+        <field name="requestKey" type="string" desc="요청 키"/>
+        <field name="result" type="string" desc="요청 처리 결과값"/>
+        <field name="resultMessage" type="string" desc="처리 오류 상세 메시지" />
+        <field name="professorId" type="string" desc="교수 아이디"/>
+        <field name="classId" type="int" desc="과목 아이디"/>
+        <field name="maxRatio" type="double" desc="할당 가능한 최대 비율" />
+    </object>
+    <handler name="TestHandler" request="RequestTestMaxRatio" response="ResponseTestMaxRatio" 
+        	comment="과제 할당 가능한 최대 평가 비율 가져오기 " />
+        	    	 	
+    <object name="RequestTestUpdate" type="request" >
+        <field name="requestKey" type="string" desc="요청 키"/>
+        <field name="professorId" type="string" desc="교수 아이디"/>
+        <field name="classId" type="int" desc="과목 아이디"/>
+        <field name="testId" type="string" desc="과제 아이디"/>
+        <field name="action" type="string" /><!-- insert,update,delete -->
+        <field name="testName" type="string" />
+        <field name="totalPoint" type="double" />
+        <field name="ratio" type="string" />
+        <field name="desc" type="string" />
+    </object>
+    <object name="ResponseTestUpdate" type="response" >
+        <field name="requestKey" type="string" desc="요청 키"/>
+        <field name="result" type="string" desc="요청 처리 결과값"/>
+        <field name="resultMessage" type="string" desc="처리 오류 상세 메시지" />
+    </object>
+    <handler name="TestHandler" request="RequestTestUpdate" response="ResponseTestUpdate" 
+        	comment="과제 등록/수정/삭제" />
+        	    	
+    <object name="AttendanceItem" type="object" >
+        <field name="professorId" type="string" />
+        <field name="classId" type="int" />
+        <field name="dateTime" type="datetime" />
+        <field name="attendanceRatio" type="double" />
+        <field name="totalCount" type="int" />
+        <field name="attendanceCount" type="int" />
+    </object>
+       	    	
+     <object name="RequestAttendanceList" type="request" >
+        <field name="requestKey" type="string" desc="요청 키"/>
+        <field name="professorId" type="string" desc="교수 아이디"/>
+        <field name="classId" type="int" desc="과목 아이디"/>
+    </object>
+    <object name="ResponseAttendanceList" type="response" >
+        <field name="requestKey" type="string" desc="요청 키"/>
+        <field name="result" type="string" desc="요청 처리 결과값"/>
+        <field name="resultMessage" type="string" desc="처리 오류 상세 메시지" />
+        <field name="className" type="string" />
+        <field name="professorName" type="string" />
+        <field name="attendanceList" type="array" template="AttendanceItem" desc="출석부 목록" />
+    </object>
+    <handler name="AttendanceHandler" request="RequestAttendanceList" response="ResponseAttendanceList" 
+        	comment="출석부 목록 가져오기" />
+        	
+    <object name="AttendanceStudentItem" type="object" >
+        <field name="professorId" type="string" />
+        <field name="classId" type="int" />
+        <field name="dateTime" type="datetime" />
+        <field name="studentId" type="string" desc="수강생 아이디"/>
+        <field name="name" type="string" />
+        <field name="grade" type="string" />
+        <field name="major" type="string" />
+        <field name="attendance" type="boolean" />
+        <field name="attendanceRatio" type="double" />
+        <field name="attendanceCount" type="int" />
+        <field name="absentCount" type="int" />
+    </object>
+       	    	
+     <object name="RequestAttendanceStudentList" type="request" >
+        <field name="requestKey" type="string" desc="요청 키"/>
+        <field name="professorId" type="string" desc="교수 아이디"/>
+        <field name="classId" type="int" desc="과목 아이디"/>
+        <field name="dateTime" type="datetime" />
+    </object>
+    <object name="ResponseAttendanceStudentList" type="response" >
+        <field name="requestKey" type="string" desc="요청 키"/>
+        <field name="result" type="string" desc="요청 처리 결과값"/>
+        <field name="resultMessage" type="string" desc="처리 오류 상세 메시지" />
+        <field name="dateTime" type="datetime" />
+        <field name="studentList" type="array" template="AttendanceStudentItem" desc="출석부" />
+    </object>
+    <handler name="AttendanceHandler" request="RequestAttendanceStudentList" response="ResponseAttendanceStudentList" 
+        	comment="일별 출석부 가져오기" />
+        	
+    <object name="RequestAttendanceByStudent" type="request" >
+        <field name="requestKey" type="string" desc="요청 키"/>
+        <field name="professorId" type="string" desc="교수 아이디"/>
+        <field name="classId" type="int" desc="과목 아이디"/>
+        <field name="studentId" type="string" desc="수강생 아이디"/>
+    </object>
+    <object name="ResponseAttendanceByStudent" type="response" >
+        <field name="requestKey" type="string" desc="요청 키"/>
+        <field name="result" type="string" desc="요청 처리 결과값"/>
+        <field name="resultMessage" type="string" desc="처리 오류 상세 메시지" />
+        <field name="studentId" type="string" desc="수강생 아이디"/>
+        <field name="attendance" type="boolean" />
+        <field name="attendanceRatio" type="double" />
+        <field name="attendanceCount" type="int" />
+        <field name="absentCount" type="int" />
+        <field name="totalCount" type="int" />
+        <field name="studentList" type="array" template="AttendanceStudentItem" desc="출석부" />
+    </object>
+    <handler name="AttendanceHandler" request="RequestAttendanceByStudent" response="ResponseAttendanceByStudent" 
+        	comment="학생별 출석부 가져오기" />
+     
+    <object name="RequestAttendanceCheck" type="request" >
+        <field name="requestKey" type="string" desc="요청 키"/>
+        <field name="professorId" type="string" desc="교수 아이디"/>
+        <field name="classId" type="int" desc="과목 아이디"/>
+        <field name="studentId" type="string" desc="수강생 아이디"/>
+        <field name="dateTime" type="datetime" />
+        <field name="attendance" type="boolean" />
+    </object>
+    <object name="ResponseAttendanceCheck" type="response" >
+        <field name="requestKey" type="string" desc="요청 키"/>
+        <field name="result" type="string" desc="요청 처리 결과값"/>
+        <field name="resultMessage" type="string" desc="처리 오류 상세 메시지" />
+        <field name="professorId" type="string" desc="교수 아이디"/>
+        <field name="classId" type="int" desc="과목 아이디"/>
+        <field name="studentId" type="string" desc="수강생 아이디"/>
+        <field name="dateTime" type="datetime" />
+        <field name="attendance" type="boolean" />
+    </object>
+    <handler name="AttendanceHandler" request="RequestAttendanceCheck" response="ResponseAttendanceCheck" 
+        	comment="출석 체크" />
+     
+     
+     <object name="ScoreItem" type="object" >
+        <field name="professorId" type="string" />
+        <field name="classId" type="int" />
+        <field name="studentId" type="string" desc="수강생 아이디"/>
+        <field name="name" type="string" />
+        <field name="grade" type="string" />
+        <field name="major" type="string" />
+        <field name="attendanceScore" type="double" />
+        <field name="testScore" type="double" />
+        <field name="totalScore" type="double" />
+    </object>
+    
+    <object name="ScoreTestItem" type="object" >
+        <field name="professorId" type="string" />
+        <field name="classId" type="int" />
+        <field name="studentId" type="string" desc="수강생 아이디"/>
+        <field name="testId" type="string" />
+        <field name="testName" type="string" />
+        <field name="testTime" type="datetime" />
+        <field name="testScore" type="double" />
+        <field name="testRatio" type="double" />
+        <field name="testMaxPoint" type="double" />
+    </object>
+    
+       	
+    <object name="RequestScoreList" type="request" >
+        <field name="requestKey" type="string" desc="요청 키"/>
+        <field name="professorId" type="string" desc="교수 아이디"/>
+        <field name="classId" type="int" desc="과목 아이디"/>
+    </object>
+    <object name="ResponseScoreList" type="response" >
+        <field name="requestKey" type="string" desc="요청 키"/>
+        <field name="result" type="string" desc="요청 처리 결과값"/>
+        <field name="resultMessage" type="string" desc="처리 오류 상세 메시지" />
+        <field name="scoreList" type="array" template="ScoreItem" desc="점수 목록" />
+    </object>
+    <handler name="ScoreHandler" request="RequestScoreList" response="ResponseScoreList" 
+        	comment="점수 목록 가져오기" />
+        	
+    <object name="RequestScoreListByStudent" type="request" >
+        <field name="requestKey" type="string" desc="요청 키"/>
+        <field name="professorId" type="string" desc="교수 아이디"/>
+        <field name="classId" type="int" desc="과목 아이디"/>
+        <field name="studentId" type="string" desc="수강생 아이디"/>
+    </object>
+    <object name="ResponseScoreListByStudent" type="response" >
+        <field name="requestKey" type="string" desc="요청 키"/>
+        <field name="result" type="string" desc="요청 처리 결과값"/>
+        <field name="resultMessage" type="string" desc="처리 오류 상세 메시지" />
+        <field name="scoreList" type="array" template="ScoreTestItem" desc="점수 목록" />
+    </object>
+    <handler name="ScoreHandler" request="RequestScoreListByStudent" response="ResponseScoreListByStudent" 
+        	comment="학생별 점수 목록 가져오기" />
+        	    	   	     
+    
+</jsondef>

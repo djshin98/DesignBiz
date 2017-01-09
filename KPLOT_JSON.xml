@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<jsondef>
+
+	<object name="RequestLogin" type="request" >
+        <field name="requestKey" type="string" desc="요청 키"/>
+        <field name="userid" type="string" desc="아이디"/>
+        <field name="userPassword" type="string" desc="PP"/>
+    </object>
+    <object name="ResponseLogin" type="response" >
+        <field name="requestKey" type="string" desc="요청 키"/>
+        <field name="result" type="string" desc="요청 처리 결과값"/>
+        <field name="resultMessage" type="string" desc="처리 오류 상세 메시지" />
+    </object>
+    <handler name="LoginHandler" request="RequestLogin" response="ResponseLogin" 
+        	comment="로그인" />
+        	
+    <object name="RequestAccount" type="request" >
+        <field name="requestKey" type="string" desc="요청 키"/>
+        <field name="userId" type="string" desc="아이디"/>
+        <field name="userName" type="string" desc="성명"/>
+        <field name="userEmail" type="string" desc="이메일"/>
+        <field name="userPassword" type="string" desc="PP"/>
+    </object>
+    <object name="ResponseAccount" type="response" >
+        <field name="requestKey" type="string" desc="요청 키"/>
+        <field name="result" type="string" desc="요청 처리 결과값"/>
+        <field name="resultMessage" type="string" desc="처리 오류 상세 메시지" />
+    </object>
+    <handler name="LoginHandler" request="RequestAccount" response="ResponseAccount" 
+        	comment="등록" />
+        	
+    <object name="RequestLogout" type="request" >
+        <field name="requestKey" type="string" desc="요청 키"/>
+    </object>
+    <object name="ResponseLogout" type="response" >
+        <field name="requestKey" type="string" desc="요청 키"/>
+        <field name="result" type="string" desc="요청 처리 결과값"/>
+        <field name="resultMessage" type="string" desc="처리 오류 상세 메시지" />
+    </object>
+    <handler name="LoginHandler" request="RequestLogout" response="ResponseLogout" 
+        	comment="로그아웃" />
+        	
+	<object name="TableItem" type="object" >
+        <field name="tableName" type="string" desc="테이블 명 or 쿼리 명"/>
+        <field name="tableSource" type="string" desc="data source"/>
+        <field name="tableDesc" type="string" desc="쿼리 설명"/>
+        <field name="query" type="string" desc="쿼리"/>
+        <field name="queryType" type="string" /><!-- "table" or "query" or view -->
+        <field name="style" type="string" />
+    </object>
+    <object name="RequestTableList" type="request" >
+        <field name="requestKey" type="string" desc="요청 키"/>
+        <field name="userId" type="string" desc="아이디"/>
+        <field name="searchText" type="string" desc="검색어"/>
+        <field name="searchTarget" type="string" desc="table/view (테이블 or 뷰)"/>
+    </object>
+    <object name="ResponseTableList" type="response" >
+        <field name="requestKey" type="string" desc="요청 키"/>
+        <field name="result" type="string" desc="요청 처리 결과값"/>
+        <field name="resultMessage" type="string" desc="처리 오류 상세 메시지" />
+        <field name="tableList" type="array" template="TableItem"/>
+    </object>
+    <handler name="TableHandler" request="RequestTableList" response="ResponseTableList" 
+        	comment="테이블 목록 가져오기" />
+        	
+    <object name="RequestUploadTables" type="request" >
+    	<field name="requestKey" type="string" desc="요청 키"/>
+    </object>
+    <object name="ResponseUploadTables" type="response" >
+        <field name="requestKey" type="string" desc="요청 키"/>
+        <field name="result" type="string" desc="요청 처리 결과값"/>
+        <field name="resultMessage" type="string" desc="처리 오류 상세 메시지" />
+        <field name="fileName" type="string" desc="파일명"/>
+        <field name="extra" type="string" desc="클라이언트 사용자 데이터"/>
+    </object>
+    <handler name="TableHandler" request="RequestUploadTables" response="ResponseUploadTables" 
+        	comment="테이블 업로드 가져오기" />
+        	
+    <object name="RequestTable" type="request" >
+    	<field name="requestKey" type="string" desc="요청 키"/>
+    	<field name="tableName" type="string" desc="테이블 명 or Query 명"/>
+    	<field name="queryType" type="string" desc="table or query or view"/>
+    	<field name="tableQuery" type="string" desc="Query"/>
+    	<field name="dataSource" type="string" desc="데이터 소스"/>
+    </object>
+    <object name="ResponseTable" type="response" >
+        <field name="requestKey" type="string" desc="요청 키"/>
+        <field name="result" type="string" desc="요청 처리 결과값"/>
+        <field name="resultMessage" type="string" desc="처리 오류 상세 메시지" />
+        <field name="tableName" type="string" desc="테이블 명"/>
+        <field name="tableContent" type="string" desc="테이블 json"/>
+    </object>
+    <handler name="TableHandler" request="RequestTable" response="ResponseTable" 
+        	comment="테이블을 JSON으로 가져오기" />
+    
+    <object name="RequestDataSource" type="request" >
+    	<field name="requestKey" type="string" desc="요청 키"/>
+    </object>
+    <object name="ResponseDataSource" type="response" >
+        <field name="requestKey" type="string" desc="요청 키"/>
+        <field name="result" type="string" desc="요청 처리 결과값"/>
+        <field name="resultMessage" type="string" desc="처리 오류 상세 메시지" />
+        <field name="names" type="array" template="string" desc="데이터 소스 리스트" />
+    </object>
+    <handler name="TableHandler" request="RequestDataSource" response="ResponseDataSource" 
+        	comment="데이터 소스 JSON으로 가져오기" />
+        	    	
+    <object name="RequestQuery" type="request" >
+    	<field name="requestKey" type="string" desc="요청 키"/>
+    	<field name="dataSourceName" type="string" desc="데이터 소스 명"/>
+    	<field name="query" type="string" desc="쿼리"/>
+    </object>
+    <object name="ResponseQuery" type="response" >
+        <field name="requestKey" type="string" desc="요청 키"/>
+        <field name="result" type="string" desc="요청 처리 결과값"/>
+        <field name="resultMessage" type="string" desc="처리 오류 상세 메시지" />
+        <field name="resultContent" type="string" desc="쿼리 결과 json"/>
+    </object>
+    <handler name="TableHandler" request="RequestQuery" response="ResponseQuery" 
+        	comment="쿼리 결과를 JSON으로 가져오기" />
+        	
+    <object name="RequestSaveQuery" type="request" >
+    	<field name="requestKey" type="string" desc="요청 키"/>
+    	<field name="name" type="string" desc="저장명"/>
+    	<field name="dataSourceName" type="string" desc="데이터 소스 명"/>
+    	<field name="query" type="string" desc="쿼리"/>
+    </object>
+    <object name="ResponseSaveQuery" type="response" >
+        <field name="requestKey" type="string" desc="요청 키"/>
+        <field name="result" type="string" desc="요청 처리 결과값"/>
+        <field name="resultMessage" type="string" desc="처리 오류 상세 메시지" />
+    </object>
+    <handler name="TableHandler" request="RequestSaveQuery" response="ResponseSaveQuery" 
+        	comment="쿼리 저장하기" />
+        	
+    <object name="RequestSaveExcel" type="request" >
+    	<field name="requestKey" type="string" desc="요청 키"/>
+    	<field name="title" type="string" desc="테이블 제목"/>
+    	<field name="offsetRow" type="int" desc="엑셀의 저장위치 Y Offset"/>
+    	<field name="offsetCol" type="int" desc="액셀의 저장위치 X Offset"/>
+    	<field name="headJSON" type="string" desc="Head JSON of table"/>
+    	<field name="bodyJSON" type="string" desc="Body JSON of table"/>
+    </object>
+    <object name="ResponseSaveExcel" type="response" >
+        <field name="requestKey" type="string" desc="요청 키"/>
+        <field name="result" type="string" desc="요청 처리 결과값"/>
+        <field name="resultMessage" type="string" desc="처리 오류 상세 메시지" />
+    </object>
+    <handler name="TableHandler" request="RequestSaveExcel" response="ResponseSaveExcel" download="true"
+        	comment="테이블을 액셀 파일로 저장하기" />
+     
+</jsondef>

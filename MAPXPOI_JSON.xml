@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<jsondef>
+	<object name="MBR" type="object" >
+        <field name="minLat" type="double" desc="min 위도"/>
+        <field name="minLng" type="double" desc="min 경도"/>
+        <field name="maxLat" type="double" desc="max 위도"/>
+        <field name="maxLng" type="double" desc="max 경도"/>
+    </object>
+	<object name="RequestPOIWithinMBR" type="request" >
+        <field name="requestKey" type="string" desc="요청 키"/>
+        <field name="mbr" type="MBR" template="MBR" desc="mbr"/>
+        <field name="layers" type="array" template="string" desc="layer names"/>
+    </object>
+    <object name="ResponsePOIWithinMBR" type="response" >
+        <field name="requestKey" type="string" desc="요청 키"/>
+        <field name="result" type="string" desc="요청 처리 결과값"/>
+        <field name="resultMessage" type="string" desc="처리 오류 상세 메시지" />
+        <field name="data" type="string" desc="데이터"/>
+    </object>
+    <handler name="RequestPOIHandler" request="RequestPOIWithinMBR" response="ResponsePOIWithinMBR" 
+        	comment="poi 정보 가져오기" />
+       
+    <object name="RequestPOIFeature" type="request" >
+        <field name="requestKey" type="string" desc="요청 키"/>
+        <field name="geoid" type="string" desc="geo object id"/>
+    </object>
+    <object name="ResponsePOIFeature" type="response" >
+        <field name="requestKey" type="string" desc="요청 키"/>
+        <field name="result" type="string" desc="요청 처리 결과값"/>
+        <field name="resultMessage" type="string" desc="처리 오류 상세 메시지" />
+        <field name="data" type="string" desc="데이터"/>
+    </object>
+    <handler name="RequestPOIHandler" request="RequestPOIFeature" response="ResponsePOIFeature" 
+        	comment="poi 속성 정보 가져오기" />
+        	
+    <object name="RequestInteractPOI" type="request" >
+        <field name="requestKey" type="string" desc="요청 키"/>
+        <field name="action" type="string" desc="insert or delete or update"/>
+        <field name="geoObjId" type="string" desc="geo object id : update or delete시 필요함"/>
+        <field name="layerName" type="string" desc="layer 명"/>
+        <field name="lng" type="double" desc="위도"/>
+        <field name="lat" type="double" desc="경도"/>
+        <field name="name" type="string" desc="name"/>
+        <field name="comment" type="string" desc="comment"/>
+        <field name="extra" type="string" desc="json extra data"/>
+    </object>
+    <object name="ResponseInteractPOI" type="response" >
+        <field name="requestKey" type="string" desc="요청 키"/>
+        <field name="result" type="string" desc="요청 처리 결과값"/>
+        <field name="resultMessage" type="string" desc="처리 오류 상세 메시지" />
+        <field name="geoid" type="string" desc="처리된 POI ID"/>
+    </object>
+    <handler name="RequestPOIHandler" request="RequestInteractPOI" response="ResponseInteractPOI" 
+        	comment="POI 정보 추가 / 삭제 / 수정" />
+        	
+</jsondef>

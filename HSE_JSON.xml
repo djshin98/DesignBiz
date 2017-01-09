@@ -1,0 +1,1020 @@
+<?xml version="1.0" encoding="euc-kr" ?>
+<jsondef>
+    <object name="RequestAllowedMenu" type="request" desc="메뉴 권한 조회 요청 메시지( 내부직원 , 협력업체 )에 따라 접근할 수 있는 메뉴정보를 요청한다." >
+        <field name="requestKey" type="string" desc="요청 키"/>
+        <field name="sitecode" type="string" desc="현장 코드값"/>
+        <field name="userid" type="string" desc="사용자 아이디"/>
+    </object>
+    <object name="ResponseAllowedMenu" type="response" desc="접근 메뉴에 대한 응답으로 allowedMenus 에 배열형식으로 접근메뉴코드 값이 존재한다." >
+        <field name="requestKey" type="string" desc="요청 키"/>
+        <field name="result" type="string" desc="요청 처리 결과값"/>
+        <field name="resultMessage" type="string" desc="처리 오류 상세 메시지" />
+        <field name="allowedMenus" type="array" template="string" desc="접근 메뉴 코드 목록 정보"/>
+    </object>
+    <handler name="MobileMenu" request="RequestAllowedMenu" 
+        	response="ResponseAllowedMenu" 
+        	comment="메뉴 권한 조회" />
+    	
+    <object name="RequestAppInitialize" type="request" desc="어플의 실행되면, 가장 먼저 서버로 전송되는 메시지다. 각 모바일의 루팅및 탈옥 감지를 위해서 각 디바이스에 해당하는 감지 정보를 서버로 부터 얻어오는 요청 메세지이다." >
+        <field name="requestKey" type="string" desc="요청 키"/>
+        <field name="devicePlatform" type="string" desc="안드로이드는 android , 아이폰은 ios " />
+        <field name="deviceKey" type="string" desc="각 디바이스 키 정보" />
+        <field name="os" type="string" desc="operating system 명" />
+        <field name="osversion" type="string" desc="디바이스 의 OS 버젼 정보" />
+    </object>
+    <object name="RootingCheckTarget" type="object" desc="루팅 감지 항목" >
+        <field name="target" type="string" desc="루팅 감지 PATH , FILE 명" />
+        <field name="minVersion" type="string" desc="적용 가능한 최소 버젼" />
+        <field name="maxVersion" type="string" desc="적용 가능한 최대 버젼" />
+    </object>
+    <object name="ResponseAppInitialize" type="response" desc="앱 루팅 탐지 정보" >
+        <field name="requestKey" type="string" desc="요청 키"/>
+        <field name="result" type="string" desc="요청 처리 결과값"/>
+        <field name="resultMessage" type="string" desc="처리 오류 상세 메시지" />
+        <field name="targets" type="array" template="RootingCheckTarget" />
+    </object>
+    <handler name="AppRooting" request="RequestAppInitialize" 
+        	response="ResponseAppInitialize" 
+        	comment="앱 루팅 탐지 정보 조회" />
+    
+    <object name="RequestAppRootingDetectReport" type="request" desc="앱 루팅 탐지" >
+        <field name="requestKey" type="string" desc="요청 키"/>
+        <field name="devicePlatform" type="string" desc="안드로이드는 android , 아이폰은 ios " />
+        <field name="deviceKey" type="string" desc="각 디바이스 키 정보" />
+        <field name="os" type="string" desc="operating system 명" />
+        <field name="osversion" type="string" desc="디바이스 의 OS 버젼 정보" />
+        <field name="report" type="string" desc="탐지 보고서" />
+    </object>
+    <object name="ResponseAppRootingDetectReport" type="response" desc="앱 루팅 탐지 보고를 잘 받았다는 응답메시지" >
+        <field name="requestKey" type="string" desc="요청 키"/>
+        <field name="result" type="string" desc="요청 처리 결과값"/>
+        <field name="resultMessage" type="string" desc="처리 오류 상세 메시지" />
+    </object>
+    <handler name="AppRootingDetection" request="RequestAppRootingDetectReport" 
+        	response="ResponseAppRootingDetectReport" 
+        	comment="앱 루팅 탐지" />
+    
+    <object name="RequestLogin" type="request" desc="사용자 로그인 요청" >
+        <field name="requestKey" type="string" desc="요청 키"/>
+        <field name="userid" type="string" desc="사용자 아이디" />
+        <field name="password" type="string" desc="사용자 암호 *******" />
+        <field name="deviceKey" type="string" desc="디바이스 키" />
+    </object>
+    <object name="RequestLoginDevice" type="request" desc="사용자 기기인증 요청" >
+        <field name="requestKey" type="string" desc="요청 키"/>
+        <field name="userid" type="string" desc="사용자 아이디" />
+        <field name="password" type="string" desc="사용자 암호 *******" />
+        <field name="deviceKey" type="string" desc="디바이스 키" />
+        <field name="authKey" type="string" desc="인증 키" />
+    </object>
+    <object name="RequestLoginOption" type="request" desc="사용자 부가인증 요청" >
+        <field name="requestKey" type="string" desc="요청 키"/>
+        <field name="userid" type="string" desc="사용자 아이디" />
+        <field name="password" type="string" desc="사용자 암호 *******" />
+        <field name="deviceKey" type="string" desc="디바이스 키" />
+        <field name="authKey" type="string" desc="인증 키" />
+    </object>
+    <object name="ResponseLogin" type="response" desc="" >
+        <field name="requestKey" type="string" desc="요청 키"/>
+        <field name="result" type="string" desc="요청 처리 결과값"/><!-- 1:디바이스 인증 대기, 2:부가인증 대기, 3:디바이스 인증완료, 4:부가인증 완료, -2:디바이스 인증 실패, -4:부가 인증 실패, -1:로그인 실패-->
+        <field name="resultMessage" type="string" desc="처리 오류 상세 메시지" />
+        <field name="userid" type="string" desc="사용자 아이디" />
+        <field name="password" type="string" desc="사용자 암호 *******" />
+        <field name="comment" type="string" desc="로그인 비고" />
+    </object>
+    <handler name="Login" request="RequestLogin" 
+        	response="ResponseLogin" 
+        	comment="로그인" />
+    <handler name="Login" request="RequestLoginDevice" 
+        	response="ResponseLogin" 
+        	comment="기기 인증" />
+    <handler name="Login" request="RequestLoginOption" 
+        	response="ResponseLogin" 
+        	comment="부가인증" />
+    
+    <object name="RequestPhotoUpload" type="request" desc="사진 업로드" >
+        <field name="requestKey" type="string" desc="요청 키"/>
+        <field name="photo" type="bytes" desc="사진 파일 데이터" />
+        <field name="name" type="string" desc="사진 파일" />
+    </object>
+    <object name="ResponsePhotoUpload" type="request" desc="사진 업로드 응답" >
+        <field name="requestKey" type="string" desc="요청 키"/>
+        <field name="result" type="string" desc="요청 처리 결과값"/>
+        <field name="resultMessage" type="string" desc="처리 오류 상세 메시지" />
+    </object>
+    <object name="RequestPhotoArrayUpload" type="request" desc="여러장의 사진 업로드" >
+        <field name="requestKey" type="string" desc="요청 키"/>
+        <field name="photos" type="array" template="bytes" />
+        <field name="names" type="array" template="string"/>
+    </object>
+    
+    <object name="RequestEmployeeManageList" type="request" desc="협력사 출근 상황 요청" >
+        <field name="requestKey" type="string" desc="요청 키"/>
+        <field name="sitecode" type="string" desc="현장 코드값"/>
+        <field name="userid" type="string" desc="사용자 아이디"/>
+        <field name="supcode" type="string" desc="" />
+        <field name="date" type="datetime" desc="시간 정보" />
+        <field name="workdate" type="datetime" desc="시간 정보" />
+    </object>
+ 
+    <object name="SupplierAttendance" type="object" desc="협력사 출근 상황" >
+        <field name="workdate" type="datetime" desc="요청 일(시간) 정보" />
+        <field name="supcode" type="string" desc="협력사 코드" />
+        <field name="company" type="string" desc="협력사 명" />
+        <field name="todayCount" type="int" desc="입출입 카운트" />
+    </object>
+    
+    <object name="ResponseEmployeeManageList" type="response" desc="협력사 출근 상황 응답" >
+        <field name="requestKey" type="string" desc="요청 키"/>
+        <field name="result" type="string" desc="요청 처리 결과값"/>
+        <field name="resultMessage" type="string" desc="처리 오류 상세 메시지" />
+        <field name="workdate" type="datetime" desc="시간 정보" />
+        <field name="records" type="array" template="SupplierAttendance" desc="협력사 출근 상황 목록" />
+    </object>
+    
+    <handler name="EmployeeManage" request="RequestEmployeeManageList" 
+        	response="ResponseEmployeeManageList" 
+        	comment="현장 출역현황 조회" />
+    
+    <object name="RequestEmployeeManageDetail" type="request" desc="협력사 출역관리 상세 요청" >
+        <field name="requestKey" type="string" desc="요청 키"/>
+        <field name="sitecode" type="string" desc="현장 코드값"/>
+        <field name="userid" type="string" desc="사용자 아이디"/>
+        <field name="supcode" type="string" desc="협력사 코드" />
+        <field name="date" type="datetime" desc="메시지 발송 시간 정보" />
+        <field name="workdate" type="datetime" desc="출역 요청일(시간) 정보" />
+    </object>
+    <object name="LaborAttendance" type="object" desc="" >
+        <field name="group" type="string" desc="구분" />
+        <field name="jickjong" type="string" desc="직종" />
+        <field name="name" type="string" desc="이름" />
+        <field name="attendTime" type="datetime" desc="출근 시간 정보" />
+        <field name="closingTime" type="datetime" desc="퇴근 시간 정보" />
+    </object>
+    <object name="ResponseEmployeeManageDetail" type="response" desc="" >
+        <field name="requestKey" type="string" desc="요청 키"/>
+        <field name="result" type="string" desc="요청 처리 결과값"/>
+        <field name="resultMessage" type="string" desc="처리 오류 상세 메시지" />
+        <field name="workdate" type="datetime" desc="시간 정보" />
+        <field name="fulltimeWorkers" type="array" template="LaborAttendance"/>
+        <field name="shorttermWorkers" type="array" template="LaborAttendance"/>
+    </object>
+    <handler name="EmployeeManage" request="RequestEmployeeManageDetail" 
+        	response="ResponseEmployeeManageDetail" 
+        	comment="협력업체 출역현황 상세데이터 조회" />
+    
+    <object name="RequestConstructMachineList" type="request" desc="" >
+        <field name="requestKey" type="string" desc="요청 키"/>
+        <field name="sitecode" type="string" desc="현장 코드값"/>
+        <field name="userid" type="string" desc="사용자 아이디"/>
+        <field name="manageno" type="string" desc="관리번호"/>
+    </object>
+    <object name="ConstructMachineInfo" type="object" desc="" >
+        <field name="cod_nam" type="string" desc="장비명" />
+        <field name="size" type="string" desc="규격" />
+        <field name="supname" type="string" desc="업체명" />
+        <field name="carno" type="string" desc="차량번호" />
+        <field name="manageno" type="string" desc="관리번호" />
+        <field name="insurend" type="datetime" desc="보험종료일자" />
+        <field name="licenseend" type="datetime" desc="면허종료일자" />
+    </object>
+    <object name="ResponseConstructMachineList" type="response" desc="" >
+        <field name="requestKey" type="string" desc="요청 키"/>
+        <field name="result" type="string" desc="요청 처리 결과값"/>
+        <field name="resultMessage" type="string" desc="처리 오류 상세 메시지" />
+        <field name="checkDate" type="datetime" desc="시간 정보" />
+        <field name="constructMachineInfos" type="array" template="ConstructMachineInfo"/>
+    </object>
+    <handler name="ConstructMachine" request="RequestConstructMachineList" 
+        	response="ResponseConstructMachineList" 
+        	comment="건설장비투입현황 리스트 조회" />
+    
+    <object name="RequestConstructMachineDetail" type="request" desc="건설 장비 상세 요청" >
+        <field name="requestKey" type="string" desc="요청 키"/>
+        <field name="sitecode" type="string" desc="현장 코드값"/>
+        <field name="userid" type="string" desc="사용자 아이디"/>
+        <field name="manageno" type="string" desc="관리 번호"/>
+    </object>
+    <object name="ConstructMachineDetailInfo" type="object" desc="건설 장비 상세 정보" >
+        <field name="lotnam" type="string" desc="LOT명" />
+        <field name="machinename" type="string" desc="장비명" />
+        <field name="size" type="string" desc="규격" />
+        <field name="carno" type="string" desc="차량번호" />
+        <field name="supname" type="string" desc="업체명" />
+        <field name="insurdi" type="string" desc="대인" />
+        <field name="insurdm" type="string" desc="대물" />
+        <field name="insurjs" type="string" desc="자손" />
+        <field name="insurjj" type="string" desc="차차" />
+        <field name="insurstart" type="datetime" desc="보험시작기간" />
+        <field name="insurend" type="datetime" desc="보험종료기간" />
+        <field name="indate" type="datetime" desc="반입일" />
+        <field name="outdate" type="datetime" desc="반출예정일" />
+        <field name="outdate2" type="datetime" desc="반출일" />
+        <field name="drivername" type="string" desc="운전자" />
+        <field name="licensegubun" type="string" desc="면허구분" />
+        <field name="licenseno" type="string" desc="면허번호" />
+        <field name="licensestart" type="datetime" desc="면허시작일" />
+        <field name="licenseend" type="datetime" desc="면허종료일" />
+    </object>
+    <object name="ResponseConstructMachineDetail" type="response" desc="건설 장비 요청 응답" >
+        <field name="requestKey" type="string" desc="요청 키"/>
+        <field name="result" type="string" desc="요청 처리 결과값"/>
+        <field name="resultMessage" type="string" desc="처리 오류 상세 메시지" />
+        <field name="checkDate" type="datetime" desc="요청 확인일" />
+        <field name="constructMachineInfos" type="array" template="ConstructMachineDetailInfo" desc="건설장비 상세 정보값 리스트"/>
+    </object>
+    <handler name="ConstructMachine" request="RequestConstructMachineDetail" 
+        	response="ResponseConstructMachineDetail" 
+        	comment="건설장비투입현황 상세데이터 조회" />
+					
+    <object name="RequestLawFileList" type="request" desc="법룰 파일 목록 요청" >
+        <field name="requestKey" type="string" desc="요청 키"/>
+        <field name="sitecode" type="string" desc="현장 코드값"/>
+        <field name="userid" type="string" desc="사용자 아이디"/>
+        <field name="mencde" type="string" desc="메뉴번호"/>
+    </object>
+    <object name="LawFile" type="object" desc="법룰 파일" >
+        <field name="mencde" type="string" desc="파일메뉴코드" />
+        <field name="mennam" type="string" desc="파일명" />
+        <field name="menfile" type="string" desc="파일url" />
+        <field name="filePath" type="string" desc="파일url" />
+    </object>
+    <object name="ResponseLawFileList" type="response" desc="" >
+        <field name="requestKey" type="string" desc="요청 키"/>
+        <field name="result" type="string" desc="요청 처리 결과값"/>
+        <field name="resultMessage" type="string" desc="처리 오류 상세 메시지" />
+        <field name="checkDate" type="datetime" desc="요청일시"/>
+        <field name="files" type="array" template="LawFile" desc="법률 파일 목록"  />
+    </object>
+    <handler name="LawFile" request="RequestLawFileList" 
+        	response="ResponseLawFileList" 
+        	comment="법률 파일 관리" />
+
+    <!-- PTW : 작업허가서 -->
+    <object name="RequestMSPSearch" type="request" desc="명일안전작업계획서 요청" >
+        <field name="requestKey" type="string" desc="요청 키"/>
+        <field name="sitecode" type="string" desc="현장 코드값"/>
+        <field name="userid" type="string" desc="사용자 아이디"/>
+        <field name="work_date" type="datetime" desc="작업일시"/>
+        <field name="sub_code" type="string" desc="서브 코드"/>
+    </object>
+    <object name="RiskReport" type="object" desc="" >
+        <field name="workCode" type="string" desc="작업코드"/>
+        <field name="riskFactor" type="string" desc="위험요인"/>
+        <field name="riskFactors" type="array" template="RiskFactor" desc="위험 요인 목록"  />
+        <field name="riskReductionMeasure" type="string" desc="위험저감대책"/>
+        <field name="riskReductionMeasures" type="array" template="RiskFactor" desc="위험 저감대책 목록"  />
+    </object>
+    <object name="RiskFactor" type="object" desc="" >
+        <field name="writer" type="string" desc="작성자" />
+        <field name="comment" type="string" desc="코멘트" />
+    </object>
+    <object name="ResponseMSPSearch" type="response" desc="명일안전작업계획서 응답" >
+        <field name="requestKey" type="string" desc="요청 키"/>
+        <field name="result" type="string" desc="요청 처리 결과값"/>
+        <field name="resultMessage" type="string" desc="처리 오류 상세 메시지" />
+        <field name="checkDate" type="datetime" desc="요청일시"/>
+        <field name="riskReports" type="array" template="RiskReport" desc="위험 보고 목록"  />
+    </object>
+    <handler name="PTW" request="RequestMSPSearch" 
+        	response="ResponseMSPSearch" 
+        	comment="명일안전작업계획서 조회" />
+    
+    <object name="RequestSupconSearch" type="request" desc="협력사 검색 요청" >
+        <field name="requestKey" type="string" desc="요청 키"/>
+        <field name="sitecode" type="string" desc="현장 코드값"/>
+        <field name="userid" type="string" desc="사용자 아이디"/>
+        <field name="work_date" type="datetime" desc="작업일시"/>
+    </object>
+    <object name="Supplier" type="object" desc="협력사" >
+        <field name="supcode" type="string" desc="협력업체 코드" />
+        <field name="supname" type="string" desc="협력업체 명" />
+    </object>
+    <object name="ResponseSupconSearch" type="response" desc="협력사 검색 결과 응답" >
+        <field name="requestKey" type="string" desc="요청 키"/>
+        <field name="result" type="string" desc="요청 처리 결과값"/>
+        <field name="resultMessage" type="string" desc="처리 오류 상세 메시지" />
+        <field name="checkDate" type="datetime" desc="요청일시"/>
+        <field name="suppliers" type="array" template="Supplier" desc="협력업체 목록"  />
+    </object>
+    <handler name="PTW" request="RequestSupconSearch" 
+        	response="ResponseSupconSearch" 
+        	comment="업체 조회" />
+    <!--  안전점검 체크리스트 -->
+    <object name="SCItem" type="object" desc="체크리스트" >
+        <field name="checkitem" type="string" desc="체크 항목" />
+        <field name="gubun" type="string" desc="구분" />
+    </object>
+    
+    <object name="RequestSCGongjongList" type="request" desc="공종 목록 검색 요청" >
+        <field name="requestKey" type="string" desc="요청 키"/>
+    </object>
+    <object name="ResponseSCGongjongList" type="response" desc="공종 목록 검색 결과 응답" >
+        <field name="requestKey" type="string" desc="요청 키"/>
+        <field name="result" type="string" desc="요청 처리 결과값"/>
+        <field name="resultMessage" type="string" desc="처리 오류 상세 메시지" />
+        <field name="checkDate" type="datetime" desc="요청일시"/>
+        <field name="workSCList" type="array" template="WorkSafetyCheck" desc="공종 목록"  />
+    </object>
+    <handler name="SafetyCheck" request="RequestSCGongjongList" 
+        	response="ResponseSCGongjongList" 
+        	comment="안전점검체크리스트 작업공종조회" />
+    
+    <object name="RequestSCWorkList" type="request" desc="" >
+        <field name="requestKey" type="string" desc="요청 키"/>
+        <field name="xparentid" type="string" desc="부모코드 1"/>
+    </object>
+    <object name="ResponseSCWorkList" type="response" desc="" >
+        <field name="requestKey" type="string" desc="요청 키"/>
+        <field name="result" type="string" desc="요청 처리 결과값"/>
+        <field name="resultMessage" type="string" desc="처리 오류 상세 메시지" />
+        <field name="checkDate" type="datetime" desc="요청일시"/>
+        <field name="workSCList" type="array" template="WorkSafetyCheck" desc="작업활동 목록"  />
+    </object>
+    <handler name="SafetyCheck" request="RequestSCWorkList" 
+        	response="ResponseSCWorkList" 
+        	comment="안전점검체크리스트 작업활동조회" />
+    
+    <object name="RequestSCCheckList" type="request" desc="안전점검체크리스트 요청" >
+        <field name="requestKey" type="string" desc="요청 키"/>
+        <field name="sitecode" type="string" desc="현장 코드값"/>
+        <field name="userid" type="string" desc="사용자 아이디"/>
+        <field name="date" type="datetime" desc="작업일시"/>
+        <field name="xparentid" type="string" desc="부모코드 2"/>
+    </object>
+    <object name="WorkSafetyCheck" type="object" desc="안전점검체크 오브젝트" >
+        <field name="workCode" type="string" desc="공종코드" />
+        <field name="workType" type="string" desc="공종명" />
+        <field name="workName" type="string" desc="작업명" />
+        <field name="check" type="boolean" desc="체크여부" />
+        <field name="uptdt" type="datetime" desc="최근수정날짜" />
+        <field name="insid" type="string" desc="작성자사번" />
+        <field name="writer" type="string" desc="작성자" />
+    </object>
+    <object name="ResponseSCCheckList" type="response" desc="안전점검체크리스트 결과 응답" >
+        <field name="requestKey" type="string" desc="요청 키"/>
+        <field name="result" type="string" desc="요청 처리 결과값"/>
+        <field name="resultMessage" type="string" desc="처리 오류 상세 메시지" />
+        <field name="checkDate" type="datetime" desc="요청일시"/>
+        <field name="workSCList" type="array" template="WorkSafetyCheck" desc="작업 체크 목록"  />
+    </object>
+    <handler name="SafetyCheck" request="RequestSCCheckList" 
+        	response="ResponseSCCheckList" 
+        	comment="안전점검체크리스트 항목조회" />
+    
+    <object name="RequestSCCheckListRegister" type="request" desc="안전점검체크리스트 등록" >
+        <field name="requestKey" type="string" desc="요청 키"/>
+        <field name="sitecode" type="string" desc="현장 코드값"/>
+        <field name="userid" type="string" desc="사용자 아이디"/>
+        <field name="date" type="datetime" desc="작업일시"/>
+        <field name="work" type="string" desc="작업"/>
+        <field name="checklist" type="array" template="SCItem" desc="체크리스트"/>
+    </object>
+    <object name="ResponseSCCheckListRegister" type="response" desc="안전점검체크리스트 등록 결과" >
+        <field name="requestKey" type="string" desc="요청 키"/>
+        <field name="result" type="string" desc="요청 처리 결과값"/>
+        <field name="resultMessage" type="string" desc="처리 오류 상세 메시지" />
+        <field name="checkDate" type="datetime" desc="요청일시"/>
+        <field name="sitecode" type="string" desc="현장 코드값"/>
+        <field name="date" type="datetime" desc="작업일시"/>
+        <field name="workTypeCode" type="string" desc="공종코드"/>
+    </object>
+    <handler name="SafetyCheck" request="RequestSCCheckListRegister" 
+        	response="ResponseSCCheckListRegister" 
+        	comment="안전점검체크리스트 데이터 저장" />
+    
+    <object name="RequestSCCheckListUpdate" type="request" desc="안전점검체크리스트 수정" >
+        <field name="requestKey" type="string" desc="요청 키"/>
+        <field name="sitecode" type="string" desc="현장 코드값"/>
+        <field name="userid" type="string" desc="사용자 아이디"/>
+        <field name="date" type="datetime" desc="작업일시"/>
+        <field name="work" type="string" desc="작업"/>
+        <field name="checklist" type="array" template="SCItem" desc="체크리스트"/>
+    </object>
+    <object name="ResponseSCCheckListUpdate" type="response" desc="안전점검체크리스트 수정 결과" >
+        <field name="requestKey" type="string" desc="요청 키"/>
+        <field name="result" type="string" desc="요청 처리 결과값"/>
+        <field name="resultMessage" type="string" desc="처리 오류 상세 메시지" />
+        <field name="checkDate" type="datetime" desc="요청일시"/>
+        <field name="sitecode" type="string" desc="현장 코드값"/>
+        <field name="date" type="datetime" desc="작업일시"/>
+        <field name="workTypeCode" type="string" desc="공종코드"/>
+    </object>
+    <handler name="SafetyCheck" request="RequestSCCheckListUpdate" 
+        	response="ResponseSCCheckListUpdate" 
+        	comment="안전점검체크리스트 데이터 수정" />
+    
+    <object name="RequestSCCheckWriteList" type="request" desc="안전점검체크리스트 등록" >
+        <field name="requestKey" type="string" desc="요청 키"/>
+        <field name="sitecode" type="string" desc="현장 코드값"/>
+        <field name="userid" type="string" desc="사용자 아이디"/>
+        <field name="date" type="datetime" desc="작업일시"/>
+        <field name="work" type="string" desc="작업"/>
+    </object>
+    <object name="ResponseSCCheckWriteList" type="response" desc="안전점검체크리스트 등록 결과" >
+        <field name="requestKey" type="string" desc="요청 키"/>
+        <field name="result" type="string" desc="요청 처리 결과값"/>
+        <field name="resultMessage" type="string" desc="처리 오류 상세 메시지" />
+        <field name="checkDate" type="datetime" desc="요청일시"/>
+        <field name="workSCList" type="array" template="WorkSafetyCheck" desc="협력업체 목록"  />
+    </object>
+    <handler name="SafetyCheck" request="RequestSCCheckWriteList" 
+        	response="ResponseSCCheckWriteList" 
+        	comment="안전점검체크리스트 작성리스트 조회" />
+    
+    <object name="RequestSCCheckListDelete" type="request" desc="안전점검체크리스트 삭제" >
+        <field name="requestKey" type="string" desc="요청 키"/>
+        <field name="sitecode" type="string" desc="현장 코드값"/>
+        <field name="userid" type="string" desc="사용자 아이디"/>
+        <field name="date" type="datetime" desc="작업일시"/>
+        <field name="work" type="string" desc="작업"/>
+    </object>
+    <object name="ResponseSCCheckListDelete" type="response" desc="안전점검체크리스트 삭제 결과 응답 " >
+        <field name="requestKey" type="string" desc="요청 키"/>
+        <field name="result" type="string" desc="요청 처리 결과값"/>
+        <field name="resultMessage" type="string" desc="처리 오류 상세 메시지" />
+        <field name="sitecode" type="string" desc="현장 코드값"/>
+        <field name="userid" type="string" desc="사용자 아이디"/>
+        <field name="date" type="datetime" desc="작업일시"/>
+        <field name="work" type="string" desc="작업"/>
+        <field name="checkDate" type="datetime" desc="요청일시"/>
+    </object>
+    <handler name="SafetyCheck" request="RequestSCCheckListDelete" 
+        	response="ResponseSCCheckListDelete" 
+        	comment="안전점검체크리스트 작성리스트 삭제" />
+
+    <!-- 부적합 보고서 -->
+    <object name="Photo" type="object">
+        <field name="data" type="bytes" desc="사진"/>
+        <field name="dataType" type="string" desc="사진파일타입"/>
+        <field name="fileName" type="string" desc="사진파일명"/>
+        <field name="lat" type="double" desc="위치경도"/>
+        <field name="lon" type="double" desc="위치위도"/>
+    </object>
+    <object name="Voice" type="object">
+        <field name="data" type="bytes" desc="음성"/>
+        <field name="dataType" type="string" desc="음성파일타입"/>
+        <field name="fileName" type="string" desc="음성파일명"/>
+    </object>
+     <object name="NCRDetail" type="object" desc="부적합 보고서 상세 오브젝트" >
+        <field name="sitecode" type="string" desc="현장코드" />
+        <field name="userid" type="string" desc="작성자" />
+        <field name="sitename" type="string" desc="현장명" />
+        <field name="yymm" type="string" desc="작성일자" />
+        <field name="ser" type="int" desc="작성NO" />
+        
+        <field name="issueDate" type="datetime" desc="작성일자" />
+        <field name="title" type="string" desc="문서제목" />
+        <field name="recvDept" type="string" desc="수신부서" />
+        <field name="publishDept" type="string" desc="발행부서" />
+        <field name="contents" type="string" desc="문서내용" />
+        <field name="rules" type="string" desc="관련규정 - 추가" />
+        <field name="photos" type="array" template="Photo" desc = "첨부파일 목록" />
+        <field name="voice" type="Voice"  desc = "음성 녹음" />
+        <field name="posx" type="string" desc="위치경도"/>
+        <field name="posy" type="string" desc="위치위도"/>
+		<field name="subcon" type="string" desc="협력업체결재자" />
+		<field name="subconnm" type="string" desc="협력업체결재자" /> 
+		<field name="subconpho" type="string" desc="협력업체연락처" />
+		<field name="subcondate" type="datetime" desc="협력업체확인시간 -추가" />
+				
+		<field name="gonggujang" type="string" desc="공구장결재자" />
+		<field name="gonggujangnm" type="string" desc="공구장결재자" />
+		<field name="gonggujangpho" type="string" desc="공구장연락처" />
+		<field name="gonggujangdate" type="datetime" desc="공구장확인시간 -추가" />
+				
+		<field name="sojang" type="string" desc="소장결재자" />
+		<field name="sojangnm" type="string" desc="소장결재자" />
+		<field name="sojangpho" type="string" desc="소장연락처" />
+		<field name="sojangdate" type="datetime" desc="소장확인시간 -추가" />
+				
+		<field name="sms" type="boolean" desc="SMS전송여부" />
+		<field name="ins_dt" type="datetime" desc="작성시간 -추가" />
+		<field name="writer" type="string" desc="작성자" />
+	</object>
+				
+     <object name="NCRSimple" type="object" desc="부적합 보고서 스마트한정보" >
+        <field name="sitecode" type="string" desc="현장코드" />
+        <field name="userid" type="string" desc="작성자" />
+        <field name="sitename" type="string" desc="현장명" />
+        <field name="yymm" type="string" desc="작성일자" />
+        <field name="ser" type="int" desc="작성NO" />
+        <field name="issueDate" type="datetime" desc="부적합보고서 발행일" />
+        <field name="title" type="string" desc="문서제목" />
+        <field name="supplierName" type="string" desc="협력업체명" />
+        <field name="insid" type="string" desc="작성자사번" />
+        <field name="writer" type="string" desc="작성자" />
+        <field name="SMS" type="boolean" desc="SMS발송여부(True/False) True인 경우는 수정 불가, False인 경우 수정 가능" />
+        <field name="STATUS" type="int" desc="수신상태(0:문자미발송작성중, 1: 발송완료, 2: 수신문서)" />
+     </object>
+     
+     <object name="Department" type="object" desc="부서 오브젝트" >
+        <field name="code" type="string" desc="부서 코드" />
+        <field name="name" type="string" desc="부서 명" />
+      </object>
+     <object name="RequestSCRList" type="request" desc="" >
+        <field name="requestKey" type="string" desc="요청 키"/>
+        <field name="sitecode" type="string" desc="현장 코드값"/>
+        <field name="userid" type="string" desc="사용자 아이디"/>
+        <field name="date" type="datetime" desc="작업일시"/>
+        <field name="work" type="string" desc="작업"/>
+    </object>
+    <object name="ResponseSCRList" type="response" desc="" >
+        <field name="requestKey" type="string" desc="요청 키"/>
+        <field name="result" type="string" desc="요청 처리 결과값"/>
+        <field name="resultMessage" type="string" desc="처리 오류 상세 메시지" />
+        <field name="checkDate" type="datetime" desc="요청일시"/>
+        <field name="ncrList" type="array" template="NCRSimple" desc="NCR 목록"/>
+    </object>
+    
+    <handler name="NCR" request="RequestSCRList" 
+        	response="ResponseSCRList" 
+        	comment="부적합 보고서 리스트 조회 후 결과리턴" />
+    
+    <object name="RequestSCRReceiveDeptList" type="request" desc="" >
+        <field name="requestKey" type="string" desc="요청 키"/>
+        <field name="sitecode" type="string" desc="현장 코드값"/>
+        <field name="userid" type="string" desc="사용자 아이디"/>
+        <field name="date" type="datetime" desc="작업일시"/>
+        <field name="work" type="string" desc="작업"/>
+    </object>
+    <object name="ResponseSCRReceiveDeptList" type="response" desc="" >
+        <field name="requestKey" type="string" desc="요청 키"/>
+        <field name="result" type="string" desc="요청 처리 결과값"/>
+        <field name="resultMessage" type="string" desc="처리 오류 상세 메시지" />
+        <field name="checkDate" type="datetime" desc="요청일시"/>
+        <field name="supplier" type="array" template="Supplier" desc="협력업체 목록"/>
+    </object>
+    <handler name="NCR" request="RequestSCRReceiveDeptList" 
+        	response="ResponseSCRReceiveDeptList" 
+        	comment="부적합보고서 수신부서 " />
+    
+    <object name="RequestSCRIssueDeptList" type="request" desc="" >
+        <field name="requestKey" type="string" desc="요청 키"/>
+        <field name="sitecode" type="string" desc="현장 코드값"/>
+        <field name="userid" type="string" desc="사용자 아이디"/>
+        <field name="date" type="datetime" desc="작업일시"/>
+        <field name="work" type="string" desc="작업"/>
+    </object>
+    <object name="ResponseSCRIssueDeptList" type="response" desc="" >
+        <field name="requestKey" type="string" desc="요청 키"/>
+        <field name="result" type="string" desc="요청 처리 결과값"/>
+        <field name="resultMessage" type="string" desc="처리 오류 상세 메시지" />
+        <field name="checkDate" type="datetime" desc="요청일시"/>
+        <field name="departments" type="array" template="Department" desc="협력업체 목록"/>
+    </object>
+    <handler name="NCR" request="RequestSCRIssueDeptList" 
+        	response="ResponseSCRIssueDeptList" 
+        	comment="부적합보고서 발행부서 " />
+    
+    <object name="RequestSCREmployeeList" type="request" desc="직원 조직도 요청" >
+        <field name="requestKey" type="string" desc="요청 키"/>
+        <field name="sitecode" type="string" desc="현장 코드값"/>
+        <field name="userid" type="string" desc="사용자 아이디"/>
+        <field name="date" type="datetime" desc="작업일시"/>
+        <field name="work" type="string" desc="작업"/>
+    </object>
+    <object name="OrganItem" type="object" desc="직원 조직도" >		
+		<field name="gubun" type="string" desc="소속부서1"/>
+		<field name="buso" type="string" desc="소속부서2"/>
+		<field name="lotnam" type="string" desc="사용자"/>
+		<field name="usridn" type="string" desc="사번"/>
+		<field name="usrnam" type="string" desc="이름"/>
+		<field name="usrlem" type="string" desc="직위"/>
+		<field name="usrpho" type="string" desc="휴대전화번호"/>
+		<field name="supcde" type="string" desc="사업자등록번호"/>
+		<field name="upmcde" type="string" desc="직책코드"/>
+		<field name="upmnam" type="string" desc="직책명"/>
+	</object>		
+    <object name="ResponseSCREmployeeList" type="response" desc="직원 조직도 응답" >
+        <field name="requestKey" type="string" desc="요청 키"/>
+        <field name="result" type="string" desc="요청 처리 결과값"/>
+        <field name="resultMessage" type="string" desc="처리 오류 상세 메시지" />
+        <field name="checkDate" type="datetime" desc="요청일시"/>
+        <field name="organs" type="array" template="OrganItem" desc="조직 목록"/>
+    </object>
+    <handler name="NCR" request="RequestSCREmployeeList" 
+        	response="ResponseSCREmployeeList" 
+        	comment="직원 조직도 조회" />
+    
+    <object name="RequestSCRView" type="request" desc="부적합 보고서 목록 요청" >
+        <field name="requestKey" type="string" desc="요청 키"/>
+        <field name="sitecode" type="string" desc="현장 코드값"/>
+        <field name="userid" type="string" desc="사용자 아이디"/>
+        <field name="yymm" type="string" desc=""/>
+       <field name="ser" type="int" desc="문서 NO"/>
+    </object>
+    <object name="ResponseSCRView" type="response" desc="부적합 보고서 목록 검색 결과" >
+        <field name="requestKey" type="string" desc="요청 키"/>
+        <field name="result" type="string" desc="요청 처리 결과값"/>
+        <field name="resultMessage" type="string" desc="처리 오류 상세 메시지" />
+        <field name="checkDate" type="datetime" desc="요청일시"/>
+        <field name="ncrList" type="array" template="NCRDetail" desc="부적합보고서 목록" />
+    </object>
+    <handler name="NCR" request="RequestSCRView" 
+        	response="ResponseSCRView" 
+        	comment="상세데이터 조회" />
+    
+    <object name="RequestSCRRegister" type="request" desc="부적합 보고서 등록 요청 doc field 에 보고서 등록 정보를 보낸다." >
+        <field name="requestKey" type="string" desc="요청 키" />
+        <field name="sitecode" type="string" desc="현장 코드값" />
+        <field name="date" type="datetime" desc="작업일시" />
+        <field name="userid" type="string" desc="사용자 아이디" />
+        <field name="doc" type="NCRDetail" desc="부적합보고서" />
+    </object>
+    
+    <object name="ResponseSCRRegister" type="response" desc="부적합 보고서 등록 결과 응답" >
+        <field name="requestKey" type="string" desc="요청 키"/>
+        <field name="result" type="string" desc="요청 처리 결과값"/>
+        <field name="resultMessage" type="string" desc="처리 오류 상세 메시지" />
+        <field name="checkDate" type="datetime" desc="요청일시"/>
+       <field name="sitecode" type="string" desc="현장 코드값"/>
+       <field name="yymm" type="string" desc=""/>
+       <field name="ser" type="int" desc="문서 NO"/>
+    </object>
+    <handler name="NCR" request="RequestSCRRegister" 
+        	response="ResponseSCRRegister" 
+        	comment="부적합 보고서 리스트 저장 후 결과리턴" />
+    
+    <object name="RequestSCREdit" type="request" desc="부적합 보고서 수정 요청 doc field 에 보고서 수정 정보를 보낸다" >
+        <field name="requestKey" type="string" desc="요청 키"/>
+        <field name="sitecode" type="string" desc="현장 코드값"/>
+        <field name="userid" type="string" desc="사용자 아이디"/>
+        <field name="date" type="datetime" desc="작업일시"/>
+        <field name="doc" type="NCRDetail" desc="부적합보고서"/>
+    </object>
+    <object name="ResponseSCREdit" type="response" desc="부적합 보고서 수정 결과 응답" >
+        <field name="requestKey" type="string" desc="요청 키"/>
+        <field name="result" type="string" desc="요청 처리 결과값"/>
+        <field name="resultMessage" type="string" desc="처리 오류 상세 메시지" />
+        <field name="checkDate" type="datetime" desc="요청일시"/>
+       <field name="sitecode" type="string" desc="현장 코드값"/>
+       <field name="yymm" type="string" desc=""/>
+       <field name="ser" type="int" desc="문서 NO"/>
+    </object>
+    <handler name="NCR" request="RequestSCREdit" 
+        	response="ResponseSCREdit" 
+        	comment="부적합 보고서 리스트 업데이트 후 결과리턴" />
+    
+    <object name="RequestSCRSendSMS" type="request" desc="부적합보고서 SMS 전송 요청" >
+        <field name="requestKey" type="string" desc="요청 키"/>
+        <field name="sitecode" type="string" desc="현장 코드값"/>
+        <field name="userid" type="string" desc="사용자 아이디"/>
+        <field name="yymm" type="string" desc=""/>
+        <field name="ser" type="int" desc="문서 NO"/>
+        <field name="subconpho" type="string" desc="협력업체 폰"/>
+        <field name="gonggujangpho" type="string" desc="공구장 폰"/>
+        <field name="sojangpho" type="string" desc="소장 폰"/>
+    </object>
+    <object name="ResponseSCRSendSMS" type="response" desc="부적합보고서 SMS 전송( ORACLE ) 등록 응답" >
+        <field name="requestKey" type="string" desc="요청 키"/>
+        <field name="result" type="string" desc="요청 처리 결과값"/>
+        <field name="resultMessage" type="string" desc="처리 오류 상세 메시지" />
+        <field name="checkDate" type="datetime" desc="요청일시"/>
+    </object>
+    <handler name="NCR" request="RequestSCRSendSMS" 
+        	response="ResponseSCRSendSMS" 
+        	comment="부적합보고서 문자전송" />
+    
+    <object name="RequestSCRDelete" type="request" desc="부적합보고서 삭제 요청" >
+        <field name="requestKey" type="string" desc="요청 키"/>
+        <field name="sitecode" type="string" desc="현장 코드값"/>
+        <field name="userid" type="string" desc="사용자 아이디"/>
+        <field name="yymm" type="string" desc=""/>
+        <field name="ser" type="int" desc="문서 NO"/>
+    </object>
+    <object name="ResponseSCRDelete" type="response" desc="부적합보고서 삭제 결과 응답" >
+        <field name="requestKey" type="string" desc="요청 키"/>
+        <field name="result" type="string" desc="요청 처리 결과값"/>
+        <field name="resultMessage" type="string" desc="처리 오류 상세 메시지" />
+        <field name="checkDate" type="datetime" desc="요청일시"/>
+        <field name="sitecode" type="string" desc="현장 코드값"/>
+        <field name="userid" type="string" desc="사용자 아이디"/>
+        <field name="yymm" type="string" desc=""/>
+        <field name="ser" type="int" desc="문서 NO"/>
+    </object>
+    <handler name="NCR" request="RequestSCRDelete" 
+        	response="ResponseSCRDelete" 
+        	comment="부적합보고서 삭제" />
+    
+    <object name="RequestSCRRegisterImage" type="request" desc="부적합 보고서 이미지 등록" >
+        <field name="requestKey" type="string" desc="요청 키"/>
+        <field name="sitecode" type="string" desc="현장 코드값"/>
+        <field name="userid" type="string" desc="사용자 아이디"/>
+        <field name="yymm" type="string" desc=""/>
+        <field name="ser" type="int" desc="문서 NO"/>
+        <field name="photos" type="array" template="Photo" desc="사진"/>
+    </object>
+    <object name="ResponseSCRRegisterImage" type="response" desc="부적합 보고서 이미지 등록 결과 응답" >
+        <field name="requestKey" type="string" desc="요청 키"/>
+        <field name="result" type="string" desc="요청 처리 결과값"/>
+        <field name="resultMessage" type="string" desc="처리 오류 상세 메시지" />
+        <field name="checkDate" type="datetime" desc="요청일시"/>
+        <field name="sitecode" type="string" desc="현장 코드값"/>
+        <field name="userid" type="string" desc="사용자 아이디"/>
+        <field name="yymm" type="string" desc=""/>
+        <field name="ser" type="int" desc="문서 NO"/>
+    </object>
+    <handler name="NCR" request="RequestSCRRegisterImage" 
+        	response="ResponseSCRRegisterImage" 
+        	comment="부적합 보고서 이미지 저장 후 결과리턴" />
+    
+    <object name="RequestSCRRegisterVoice" type="request" desc="부적합 보고서 음성 등록" >
+        <field name="requestKey" type="string" desc="요청 키"/>
+        <field name="sitecode" type="string" desc="현장 코드값"/>
+        <field name="userid" type="string" desc="사용자 아이디"/>
+        <field name="yymm" type="string" desc=""/>
+        <field name="ser" type="int" desc="문서 NO"/>
+        <field name="voice" type="Voice" desc="음성 녹음"/>
+    </object>
+    <object name="ResponseSCRRegisterVoice" type="response" desc="부적합 보고서 음성 등록 결과 응답" >
+        <field name="requestKey" type="string" desc="요청 키"/>
+        <field name="result" type="string" desc="요청 처리 결과값"/>
+        <field name="resultMessage" type="string" desc="처리 오류 상세 메시지" />
+        <field name="checkDate" type="datetime" desc="요청일시"/>
+        <field name="sitecode" type="string" desc="현장 코드값"/>
+        <field name="userid" type="string" desc="사용자 아이디"/>
+        <field name="yymm" type="string" desc=""/>
+        <field name="ser" type="int" desc="문서 NO"/>
+    </object>
+    <handler name="NCR" request="RequestSCRRegisterVoice" 
+        	response="ResponseSCRRegisterVoice" 
+        	comment="부적합 보고서 음성 저장 후 결과리턴" />
+    
+    <object name="RequestSCRRegisterJochi" type="request" desc="부적합 보고서 조치 등록" >
+        <field name="requestKey" type="string" desc="요청 키"/>
+        <field name="sitecode" type="string" desc="현장 코드값"/>
+        <field name="userid" type="string" desc="사용자 아이디"/>
+        <field name="yymm" type="string" desc=""/>
+        <field name="ser" type="int" desc="문서 NO"/>
+        <field name="contents" type="string" desc="조치 내용"/>
+        <field name="photos" type="array" template="Photo" desc="사진"/>
+    </object>
+    <object name="ResponseSCRRegisterJochi" type="response" desc="부적합 보고서 조치 등록 결과 응답" >
+        <field name="requestKey" type="string" desc="요청 키"/>
+        <field name="result" type="string" desc="요청 처리 결과값"/>
+        <field name="resultMessage" type="string" desc="처리 오류 상세 메시지" />
+        <field name="checkDate" type="datetime" desc="요청일시"/>
+        <field name="sitecode" type="string" desc="현장 코드값"/>
+        <field name="userid" type="string" desc="사용자 아이디"/>
+        <field name="yymm" type="string" desc=""/>
+        <field name="ser" type="int" desc="문서 NO"/>
+    </object>
+    <handler name="NCR" request="RequestSCRRegisterJochi" 
+        	response="ResponseSCRRegisterJochi" 
+        	comment="부적합 보고서 조치결과 저장" />
+    
+    <object name="RequestSCRRegisterImageJochi" type="request" desc="부적합 보고서 조치결과 이미지 등록 요청" >
+        <field name="requestKey" type="string" desc="요청 키"/>
+        <field name="sitecode" type="string" desc="현장 코드값"/>
+        <field name="userid" type="string" desc="사용자 아이디"/>
+        <field name="yymm" type="string" desc=""/>
+        <field name="ser" type="int" desc="문서 NO"/>
+        <field name="contents" type="string" desc="조치 내용"/>
+        <field name="photos" type="array" template="Photo" desc="사진"/>
+    </object>
+    <object name="ResponseSCRRegisterImageJochi" type="response" desc="부적합 보고서 조치결과 이미지 등록 결과 응답" >
+        <field name="requestKey" type="string" desc="요청 키"/>
+        <field name="result" type="string" desc="요청 처리 결과값"/>
+        <field name="resultMessage" type="string" desc="처리 오류 상세 메시지" />
+        <field name="checkDate" type="datetime" desc="요청일시"/>
+        <field name="sitecode" type="string" desc="현장 코드값"/>
+        <field name="userid" type="string" desc="사용자 아이디"/>
+        <field name="yymm" type="string" desc=""/>
+        <field name="ser" type="int" desc="문서 NO"/>
+    </object>
+    <handler name="NCR" request="RequestSCRRegisterImageJochi" 
+        	response="ResponseSCRRegisterImageJochi" 
+        	comment="부적합 보고서 조치 후 이미지 저장 후 결과리턴" />
+
+     <object name="NCRResult" type="object" desc="부적합 보고서 조치결과 항목" >
+        <field name="sitecode" type="string" desc="현장코드" />
+        <field name="sitename" type="string" desc="현장명" />
+        <field name="writer" type="string" desc="작성자" />
+        <field name="writernm" type="string" desc="작성자" />
+        <field name="issuedate" type="datetime" desc="작성일자" />
+        <field name="title" type="string" desc="문서제목" />
+        <field name="recvDept" type="string" desc="수신부서" />
+        <field name="publishDept" type="string" desc="발행부서" />
+        <field name="contents" type="string" desc="문서내용" />
+        <field name="rules" type="string" desc="관련규정 - 추가" />
+        <field name="writedate" type="datetime" desc="작성일자" />
+        <field name="photos" type="array" template="Photo" desc="사진"/>
+    </object>    
+					
+     <object name="RequestSCRViewJochi" type="request" desc="부적합 보고서 조치 목록 요청" >
+        <field name="requestKey" type="string" desc="요청 키"/>
+        <field name="sitecode" type="string" desc="현장 코드값"/>
+        <field name="userid" type="string" desc="사용자 아이디"/>
+        <field name="yymm" type="string" desc=""/>
+        <field name="ser" type="int" desc="문서 NO"/>
+    </object>
+    <object name="ResponseSCRViewJochi" type="response" desc="부적합 보고서 조치 목록 결과 " >
+        <field name="requestKey" type="string" desc="요청 키"/>
+        <field name="result" type="string" desc="요청 처리 결과값"/>
+        <field name="resultMessage" type="string" desc="처리 오류 상세 메시지" />
+        <field name="checkDate" type="datetime" desc="요청일시"/>
+        <field name="ncrList" type="array" template="NCRResult" desc="부적합 보고서 조치결과 목록"/>
+        <field name="userid" type="string" desc="사용자 아이디"/>
+        <field name="sitecode" type="string" desc="현장 코드값"/>
+        <field name="yymm" type="string" desc=""/>
+        <field name="ser" type="int" desc="문서 NO"/>
+    </object>
+    <handler name="NCR" request="RequestSCRViewJochi" 
+        	response="ResponseSCRViewJochi" 
+        	comment="부적합 보고서 조치결과 상세데이터 조회" />
+    
+    <object name="RequestSCRDeleteJochi" type="request" desc="부적합 보고서 조치 삭제" >
+        <field name="requestKey" type="string" desc="요청 키"/>
+        <field name="sitecode" type="string" desc="현장 코드값"/>
+        <field name="userid" type="string" desc="사용자 아이디"/>
+        <field name="yymm" type="string" desc=""/>
+        <field name="ser" type="int" desc="문서 NO"/>
+    </object>
+    <object name="ResponseSCRDeleteJochi" type="response" desc="부적합 보고서 조치 삭제 결과" >
+        <field name="requestKey" type="string" desc="요청 키"/>
+        <field name="result" type="string" desc="요청 처리 결과값"/>
+        <field name="resultMessage" type="string" desc="처리 오류 상세 메시지" />
+        <field name="checkDate" type="datetime" desc="요청일시"/>
+        <field name="userid" type="string" desc="사용자 아이디"/>
+        <field name="sitecode" type="string" desc="현장 코드값"/>
+        <field name="yymm" type="string" desc=""/>
+        <field name="ser" type="int" desc="문서 NO"/>
+    </object>
+    <handler name="NCR" request="RequestSCRDeleteJochi" 
+        	response="ResponseSCRDeleteJochi" 
+        	comment="부적합보고서 조치결과 데이터,이미지 삭제" />
+    
+    <object name="RequestSCRDeleteJochiContents" type="request" desc="" >
+        <field name="requestKey" type="string" desc="요청 키"/>
+        <field name="sitecode" type="string" desc="현장 코드값"/>
+        <field name="userid" type="string" desc="사용자 아이디"/>
+        <field name="yymm" type="string" desc=""/>
+        <field name="ser" type="int" desc="문서 NO"/>
+    </object>
+    <object name="ResponseSCRDeleteJochiContents" type="response" desc="" >
+        <field name="requestKey" type="string" desc="요청 키"/>
+        <field name="result" type="string" desc="요청 처리 결과값"/>
+        <field name="resultMessage" type="string" desc="처리 오류 상세 메시지" />
+        <field name="checkDate" type="datetime" desc="요청일시"/>
+        <field name="userid" type="string" desc="사용자 아이디"/>
+        <field name="sitecode" type="string" desc="현장 코드값"/>
+        <field name="yymm" type="string" desc=""/>
+        <field name="ser" type="int" desc="문서 NO"/>
+    </object>
+    <handler name="NCR" request="RequestSCRDeleteJochiContents" 
+        	response="ResponseSCRDeleteJochiContents" 
+        	comment="부적합보고서 조치결과 데이터 삭제" />
+
+    <!--  교육 훈련  -->
+	<object name="Education" type="object" desc="교육" >
+	    <field name="ser" type="int" desc="NO"/>
+        <field name="name" type="string" desc="교육명"/>
+        <field name="date" type="datetime" desc="교육일자"/>
+        <field name="gubun" type="string" desc="교육구분" />
+        <field name="start" type="datetime" desc="교육시작시간"/>
+        <field name="end" type="datetime" desc="교육종료시간"/>
+        <field name="place" type="string" desc="현장 교육장소"/>
+        <field name="speaker" type="string" desc="강사"/>
+        <field name="method" type="string" desc="교육방법"/>
+        <field name="content" type="string" desc="교육내용"/>
+        <field name="sign" type="bytes" desc="서명"/>
+        <field name="userid" type="string" desc="작성자사번"/>
+    </object>
+   <object name="RequestTD_Insert" type="request" desc="" >
+        <field name="requestKey" type="string" desc="요청 키"/>
+        <field name="sitecode" type="string" desc="현장 코드값"/>
+        <field name="userid" type="string" desc="사용자 아이디"/>
+        <field name="ser" type="int" desc=""/>
+        <field name="date" type="datetime" desc=""/>
+        <field name="doc" type="Education" desc="문서"/>
+    </object>
+    <object name="ResponseTD_Insert" type="response" desc="" >
+        <field name="requestKey" type="string" desc="요청 키"/>
+        <field name="result" type="string" desc="요청 처리 결과값"/>
+        <field name="resultMessage" type="string" desc="처리 오류 상세 메시지" />
+        <field name="checkDate" type="datetime" desc="요청일시"/>
+        <field name="sitecode" type="string" desc="현장 코드값"/>
+        <field name="date" type="datetime" desc=""/>
+        <field name="userid" type="string" desc="사용자 아이디"/>
+        <field name="ser" type="int" desc=""/>
+    </object>
+    <handler name="Training" request="RequestTD_Insert" 
+        	response="ResponseTD_Insert" 
+        	comment="교육훈련일지 저장 후 결과리턴" />
+    
+     <object name="RequestTD_Update" type="request" desc="교육훈련 수정" >
+        <field name="requestKey" type="string" desc="요청 키"/>
+        <field name="sitecode" type="string" desc="현장 코드값"/>
+        <field name="userid" type="string" desc="사용자 아이디"/>
+        <field name="ser" type="int" desc=""/>
+        <field name="date" type="datetime" desc=""/>
+        <field name="doc" type="Education" desc="문서"/>
+    </object>
+    <object name="ResponseTD_Update" type="response" desc="교육훈련 수정 결과 응답" >
+        <field name="requestKey" type="string" desc="요청 키"/>
+        <field name="result" type="string" desc="요청 처리 결과값"/>
+        <field name="resultMessage" type="string" desc="처리 오류 상세 메시지" />
+        <field name="checkDate" type="datetime" desc="요청일시"/>
+        <field name="sitecode" type="string" desc="현장 코드값"/>
+        <field name="date" type="datetime" desc=""/>
+        <field name="userid" type="string" desc="사용자 아이디"/>
+        <field name="ser" type="int" desc=""/>
+    </object>
+    <handler name="Training" request="RequestTD_Update" 
+        	response="ResponseTD_Update" 
+        	comment="교육훈련일지 수정" />
+    
+    <object name="RequestTD_Delete" type="request" desc="교육 훈련 삭제" >
+        <field name="requestKey" type="string" desc="요청 키"/>
+        <field name="sitecode" type="string" desc="현장 코드값"/>
+        <field name="userid" type="string" desc="사용자 아이디"/>
+        <field name="ser" type="int" desc=""/>
+        <field name="date" type="datetime" desc=""/>
+    </object>
+    <object name="ResponseTD_Delete" type="response" desc="교육 훈련 삭제 결과" >
+        <field name="requestKey" type="string" desc="요청 키"/>
+        <field name="result" type="string" desc="요청 처리 결과값"/>
+        <field name="resultMessage" type="string" desc="처리 오류 상세 메시지" />
+        <field name="checkDate" type="datetime" desc="요청일시"/>
+        <field name="sitecode" type="string" desc="현장 코드값"/>
+        <field name="date" type="datetime" desc="" />
+        <field name="userid" type="string" desc="사용자 아이디"/>
+        <field name="ser" type="int" desc=""/>
+    </object>
+    <handler name="Training" request="RequestTD_Delete" 
+        	response="ResponseTD_Delete" 
+        	comment="교육훈련일지 삭제" />
+    
+    <object name="RequestTD_ListSearch" type="request" desc="교육 훈련 목록 요청" >
+        <field name="requestKey" type="string" desc="요청 키"/>
+        <field name="userid" type="string" desc="사용자 아이디"/>
+        <field name="sitecode" type="string" desc="현장 코드값"/>
+    </object>
+    <object name="ResponseTD_ListSearch" type="response" desc="교육 훈련 목록 검색 결과" >
+        <field name="requestKey" type="string" desc="요청 키"/>
+        <field name="result" type="string" desc="요청 처리 결과값"/>
+        <field name="resultMessage" type="string" desc="처리 오류 상세 메시지" />
+        <field name="checkDate" type="datetime" desc="요청일시"/>
+        <field name="docs" type="array" template="Education" desc="문서"/>
+    </object>
+    <handler name="Training" request="RequestTD_ListSearch" 
+        	response="ResponseTD_ListSearch" 
+        	comment="교육훈련일지 리스트 조회" />
+    
+     <object name="RequestTD_DetailSearch" type="request" desc="교육훈련 상세 검색 요청" >
+        <field name="requestKey" type="string" desc="요청 키"/>
+        <field name="sitecode" type="string" desc="현장 코드값"/>
+        <field name="userid" type="string" desc="사용자 아이디"/>
+        <field name="ser" type="int" desc=""/>
+    </object>
+    <object name="ResponseTD_DetailSearch" type="response" desc="교육훈련 상세 검색 결과" >
+        <field name="requestKey" type="string" desc="요청 키"/>
+        <field name="result" type="string" desc="요청 처리 결과값"/>
+        <field name="resultMessage" type="string" desc="처리 오류 상세 메시지" />
+        <field name="checkDate" type="datetime" desc="요청일시"/>
+        <field name="docs" type="array" template="Education" desc="문서"/>
+    </object>
+    <handler name="Training" request="RequestTD_DetailSearch" 
+        	response="ResponseTD_DetailSearch" 
+        	comment="교육훈련일지 상세 조회" />
+    
+    <object name="RequestTD_SignfileUpload" type="request" desc="교육훈련 sign file 업로드" >
+        <field name="requestKey" type="string" desc="요청 키"/>
+        <field name="sitecode" type="string" desc="현장 코드값"/>
+        <field name="userid" type="string" desc="사용자 아이디"/>
+        <field name="ser" type="int" desc=""/>
+        <field name="sign" type="bytes" desc="서명"/>
+    </object>
+    <object name="ResponseTD_SignfileUpload" type="response" desc="교육훈련 sign file 업로드 후 결과 응답" >
+        <field name="requestKey" type="string" desc="요청 키"/>
+        <field name="result" type="string" desc="요청 처리 결과값"/>
+        <field name="resultMessage" type="string" desc="처리 오류 상세 메시지" />
+        <field name="checkDate" type="datetime" desc="요청일시"/>
+        <field name="sitecode" type="string" desc="현장 코드값"/>
+        <field name="ser" type="int" desc=""/>
+    </object>
+    <handler name="Training" request="RequestTD_SignfileUpload" 
+        	response="ResponseTD_SignfileUpload" 
+        	comment="교육훈련 서명파일_업로드" />
+
+    <!-- 버젼 체크 -->
+
+<object name="RequestVersionCheck" type="request" desc="어플리케이션의 버젼 정보" >
+        <field name="requestKey" type="string" desc="요청 키"/>
+        <field name="gubun" type="string" desc="구분"/>
+    </object>
+    <object name="ResponseVersionCheck" type="response" desc="" >
+        <field name="requestKey" type="string" desc="요청 키"/>
+        <field name="result" type="string" desc="요청 처리 결과값"/>
+        <field name="resultMessage" type="string" desc="처리 오류 상세 메시지" />
+        <field name="checkDate" type="datetime" desc="요청일시"/>
+        <field name="gubun" type="string" desc="현장 코드값"/>
+        <field name="version" type="string" desc="버젼"/>
+        <field name="gps" type="string" desc="GPS"/>
+    </object>
+    <handler name="VersionCheck" request="RequestVersionCheck" 
+        	response="ResponseVersionCheck" 
+        	comment="버젼 체크" />
+    
+</jsondef>
